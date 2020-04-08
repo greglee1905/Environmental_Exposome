@@ -1,0 +1,8 @@
+FID,rec_id,state,county,site_name,devel,latitude,longitude,oremin,assocmin,hostrock,source
+0,393,UT,Beaver,Big Pass group,occurrence,38.3037987,-112.821600000000004,"short-fiber chrysotile (asbestos)"""", fibrous tremolite","garnet, epidote, wollastonite, fluorite, pyrite, calcite, scheelite, serpentine",calcite-wollastonite marble,ofr20081095
+1,394,UT,Beaver,King David mine,occurrence,38.4515991,-113.277799999999999,asbestos"""" ,"alunite, marble [calc-silicate minerals], argentite, chalcopyrite, sphalerite, wurtzite, pyrite, galena",marble,ofr20081095
+2,395,UT,Millard,Tremolite no. 1 mine,past producer,38.5815010,-112.840900000000005,mass-fiber tremolite asbestos,"calcite, """"potash"""", malachite, chalcopyrite, azurite",marble (dolomitic),ofr20081095
+3,396,UT,Duchesne,unnamed occurrences in Avintaquin Canyon,occurrence,39.9799995,-110.859999999999999,asbestiform magnesioarfvedsonite,"dolomite, quartz, hornblende, plagioclase",dolomitic marlstone (""""oil shale""""),ofr20081095
+4,397,UT,Salt Lake,Bingham stock,occurrence,40.5169983,-112.156999999999996,"asbestos"""", finely fibrous actinolite","numerous minerals reported--see Hunt (1924), Lanier and others (1978), Reid (1978), Atkinson and Einaudi (1978)",dolomitic copper skarn,ofr20081095
+5,398,UT,Davis,occurrences in Bair Canyon,occurrence,41.0410004,-111.858999999999995,"slip-fiber tremolite asbestos, fibrous actinolite","microcline feldspar, quartz, actinolite, mica, pyrite",pegmatite sill,ofr20081095
+6,399,UT,Box Elder,Pack Rat tremolite prospect,past prospect,41.1994019,-113.337500000000006,tremolite asbestos,dolomite,dolomitic marble,ofr20081095
