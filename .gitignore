@@ -1,9 +1,9 @@
 #this is a gitignore file
 
 #Parcel Data
-./Parcel/2016/
-./Parcel/2016_parcel_gdb/
+Parcel/2016/
+Parcel/2016_parcel_gdb/
 
 #TRI
-./TRI/CensusBlockGroups2000.gdb/
+TRI/CensusBlockGroups2000.gdb/
 TRI/Toxic_Release_Inventory/
