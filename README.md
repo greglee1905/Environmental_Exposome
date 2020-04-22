@@ -1,2 +1,2 @@
 # Environmental_Exposome
-Exploration and Predicition using Utah Environmental Exposures
+Exploration and Prediction using Utah Environmental Exposures
