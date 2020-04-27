@@ -1,21 +1,21 @@
 ,INDUSTRYSECTOR
 0,Petroleum
-1,Furniture
-2,Petroleum Bulk Terminals
+7,Furniture
+13,Petroleum Bulk Terminals
 18,Chemicals
 20,Primary Metals
-67,Other
+59,Other
 99,Hazardous Waste
-113,Chemical Wholesalers
-114,Fabricated Metals
-126,Miscellaneous Manufacturing
-129,Computers and Electronic Products
-130,Metal Mining
-134,Electric Utilities
-155,Food
-203,Leather
-244,Transportation Equipment
-273,Electrical Equipment
-280,Plastics and Rubber
-363,Machinery
-551,Nonmetallic Mineral Product
+113,Fabricated Metals
+118,Chemical Wholesalers
+125,Computers and Electronic Products
+126,Food
+134,Transportation Equipment
+145,Miscellaneous Manufacturing
+220,Leather
+240,Electric Utilities
+242,Metal Mining
+272,Electrical Equipment
+301,Plastics and Rubber
+342,Machinery
+554,Nonmetallic Mineral Product

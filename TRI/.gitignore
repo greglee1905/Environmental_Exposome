@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#My Stuff:
+Toxic_Release_Inventory/
