@@ -52,7 +52,7 @@ def HYSPLIT_configure(start_model,
 
     import subprocess
     #Create the Batch File
-    myBat = open(r'C:\\Users\\u0890227\\Desktop\\HYSPLIT\\batch\\hysplit_temp.bat','w+')
+    myBat = open(r'C:\\Users\\u0890227\\Desktop\\TRI_HYSPLIT\\batch\\hysplit_temp.bat','w+')
 
     #Write the Control file
     myBat.write('''@echo off
@@ -62,8 +62,8 @@ def HYSPLIT_configure(start_model,
 
     REM Set the directories
     set DIR=C:\\Users\\u0890227\\
-    set PGM=%DIR%\hysplit4
-    cd %PGM%\working
+    set PGM=%DIR%\\hysplit4
+    cd %PGM%\\working
 
     REM -----------------------------------------------
 
@@ -122,7 +122,7 @@ def HYSPLIT_configure(start_model,
     REM Grid span (Lat,lon in degrees)
     echo 30.0 30.0              >>CONTROL
     REM Enter grid #1 directory (where things are written)
-    echo .\                     >>CONTROL
+    echo .//                    >>CONTROL
     REM Enter grid #1 filename
     echo cdump                  >>CONTROL
     REM Number of vertical concentration levels (add 0 if adding treating at ground level)
@@ -177,7 +177,7 @@ def HYSPLIT_configure(start_model,
     REM adding -a2 to imply Arcview generate in value
     REM adding -x1.0E+12 to make the units picopounds
     REM Will need to adjust values..I think..
-    %PGM%\exec\concplot -icdump -a2 -c50 -x1.0E+12 -j%PGM%\graphics\arlmap
+    %PGM%\\exec\\concplot -icdump -a2 -c50 -x1.0E+12 -j%PGM%\\graphics\\arlmap
 
     REM Open the plotting
 
@@ -206,8 +206,8 @@ def HYSPLIT_configure(start_model,
         %PGM%\\exec\\txt2dbf -C11 -C5 -C9 -C5 -C6../ -C6 -d, !att! concpolys.dbf
 
 
-        mkdir C:\\Users\\u0890227\\Desktop\\hysplit\\{filename}\\hour_after_start_!file_count!
-        move %PGM%\\working\\*concpolys* C:\\Users\\u0890227\\Desktop\\hysplit\\{filename}\\hour_after_start_!file_count!
+        mkdir C:\\Users\\u0890227\\Desktop\\TRI_HYSPLIT\\{filename}\\hour_after_start_!file_count!
+        move %PGM%\\working\\*concpolys* C:\\Users\\u0890227\\Desktop\\TRI_HYSPLIT\\{filename}\\hour_after_start_!file_count!
 
         set /A Counter=0
       )
@@ -236,7 +236,7 @@ def HYSPLIT_configure(start_model,
 
     myBat.close()
 
-    subprocess.call([r'C:\\Users\\u0890227\\Desktop\\HYSPLIT\\batch\\hysplit_temp.bat'])
+    subprocess.call([r'C:\\Users\\u0890227\\Desktop\\TRI_HYSPLIT\\batch\\hysplit_temp.bat'])
     print('Script Completed')
 
 def RSEI_merger(RSEI_df,TRI_df):
