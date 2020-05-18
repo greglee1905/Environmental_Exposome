@@ -256,25 +256,26 @@ def RSEI_merger(RSEI_df,TRI_df):
     merge: dataframe with the parameters listed above.
     """
 
+    #If necessary, these can be changed to include more of the original parameters!
     merge = pd.merge(TRI_df.reset_index(),
                  RSEI_df,
                  left_on ='FRSID',
                  right_on = 'FRSID',
-                 how='left')[['Date',
-                              'CAS',
-                              'Daily_Release',
+                 how='left')[['date',
+                              'CAS_No',
+                              'Release',
                               'FRSID',
-                              'Chem',
+                              'CHEMICAL',
                               'MW',
-                              'Half_Life',
-                              'Solubility',
-                              'Lat',
-                              'Long',
-                              'City',
-                              'ZIPCode',
-                              'FacilityName',
-                              'City',
-                              'County',
+                              '1/2 Life',
+                              'Solubility in H2O',
+                              'LATITUDE',
+                              'LONGITUDE',
+                              'CITY',
+                              'ZIP',
+                              'FACILITYNAME',
+                              'CITY',
+                              'COUNTY',
                               'StackHeight',
                               'StackVelocity',
                               'StackDiameter',
@@ -297,9 +298,9 @@ def hysplit_input_conversion(data,stack_or_fug):
 
     """
     if stack_or_fug == 1:
-        data["HS_loc_input"] = round(data["Lat"],2).astype(str) + " "+ round(data["Long"],2).astype(str) + " " + data['StackHeight'].astype(str)
+        data["HS_loc_input"] = round(data["LATITUDE"],2).astype(str) + " "+ round(data["LONGITUDE"],2).astype(str) + " " + data['StackHeight'].astype(str)
     if stack_or_fug == 0:
-        data["HS_loc_input"] = round(data["Lat"],2).astype(str) + " "+ round(data["Long"],2).astype(str) + " " + "0.00"
+        data["HS_loc_input"] = round(data["LATITUDE"],2).astype(str) + " "+ round(data["LONGITUDE"],2).astype(str) + " " + "0.00"
 
     return data
 
@@ -350,3 +351,54 @@ def chem_date_comb(startdate,enddate,freq,data):
     final = final.set_index(idx)
 
     return final.drop(columns = ['CAS'])
+
+
+def chem_date_comb_2(data,freq,release_type):
+    """A function which takes yearly data and creates an index breakdown of yearly release from start to end date at the desired frequency.
+
+        Input:
+        ----------
+        freq: Datetime description for how often measurements should be taken. Ex-3H
+        data: Input data to perform analysis on. Derived from TRI information.
+        release_type: the type of release 0 - stack 1 - fugitive
+        Return:
+        ----------
+        data: returns a dataframe with the datetime and CAS as co-indexes.
+
+    """
+    if release_type =='fugitive':
+        release = '51-FUGITIVEAIR'
+    elif release_type=='stack':
+        release = '52-STACKAIR'
+    else:
+        print('Please check release type')
+
+
+
+    data = data.reset_index()
+    data['date'] = pd.to_datetime(data['YEAR'], format='%Y')
+    appended_data = []
+
+    for rows in range(data.shape[0]):
+        temp = data.iloc[rows]
+        #Fill the dataframe with the corresponding year dates
+        cal = pd.DataFrame({'date':pd.date_range(temp['date'],temp['date'] +
+                                                 pd.DateOffset(years=1)-pd.DateOffset(hours=3),
+                                                 freq='3H')})
+
+        temp=pd.DataFrame(temp).T.merge(cal,how='right').ffill()
+
+        #Add a release column for the amount released per day
+        temp['Release'] = temp[release]/cal.shape[0]
+        #Place into a dataframe
+        appended_data.append(temp)
+
+        if rows%50 == 0:
+            print('Percentage Complete: {:.2f}'.format(rows/data.shape[0]*100))
+
+    appended_data = pd.concat(appended_data)
+    #Reset the index for additional steps
+    appended_data = appended_data.set_index('date')
+    appended_data = appended_data.sort_index()
+
+    return appended_data
