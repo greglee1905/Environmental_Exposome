@@ -262,7 +262,7 @@ def RSEI_merger(RSEI_df,TRI_df):
                  left_on ='FRSID',
                  right_on = 'FRSID',
                  how='left')[['date',
-                              'CAS_No',
+                              'CAS#/COMPOUNDID',
                               'Release',
                               'FRSID',
                               'CHEMICAL',
