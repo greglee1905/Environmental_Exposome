@@ -23,7 +23,8 @@ def HYSPLIT_configure(start_model,
                       samp_interval,
                       puff_or_part,
                       particle_num,
-                      filename):
+                      filename,
+                      concplot_a):
     """
     This function is used to configure the hysplit model. If changes need to be made outside of the
     parameters described here, please edit the py file directly.
@@ -47,6 +48,7 @@ def HYSPLIT_configure(start_model,
     puff_or_part: Designation for if the model should use puffs or particles. Several options, see HYSPLIT user manual for details. Ex: 0
     particle_num: The total number of particles or puffs utilized by the model. Ex-1000
     filename: The save name for the files Ex-Jan_1
+    concplot_a: Output format ((0)-no dump, 1-ESRI (log10), 2-ESRI (decimal), 3-Google Earth)
 
     """
 
@@ -119,8 +121,8 @@ def HYSPLIT_configure(start_model,
     echo 0.0 0.0                >>CONTROL
     REM Grid spacing (Lat,lon in degrees)
     echo 0.05 0.05              >>CONTROL
-    REM Grid span (Lat,lon in degrees)
-    echo 30.0 30.0              >>CONTROL
+    REM Grid span (Lat,lon in degrees) changing based upon the width and height of Utah
+    echo 5.5 5.5              >>CONTROL
     REM Enter grid #1 directory (where things are written)
     echo .//                    >>CONTROL
     REM Enter grid #1 filename
@@ -163,8 +165,18 @@ def HYSPLIT_configure(start_model,
 
 
     REM -----------------------------------------------
+    REM Remove any existing files which may be interfering
     IF EXIST cdump DEL cdump
+
+    for %%i in (C:\\Users\\u0890227\\hysplit4\\working\\*GIS_*) do (
+        set tmp=%%i
+        echo !tmp!
+        DEL !tmp!
+    )
+
+
     REM -----------------------------------------------
+
 
     REM Run the model
     %PGM%\\exec\\hycs_std
@@ -176,14 +188,12 @@ def HYSPLIT_configure(start_model,
 
     REM adding -a2 to imply Arcview generate in value
     REM adding -x1.0E+12 to make the units picopounds
-    REM Will need to adjust values..I think..
-    %PGM%\\exec\\concplot -icdump -a2 -c50 -x1.0E+12 -j%PGM%\\graphics\\arlmap
-
-    REM Open the plotting
+    %PGM%\\exec\\concplot -icdump -a{concplot_a} -d1 -c50 -x1.0E+12 -j%PGM%\\graphics\\arlmap
 
 
     REM --------------------------------------------------
     REM Save all shapefiles into shapefiles
+    REM First delete
     set /A Counter=0
     set /A file_count = 0
 
@@ -198,9 +208,6 @@ def HYSPLIT_configure(start_model,
       if !Counter! ==2 (
       set txt=%%i
       set /A file_count+=3
-
-        echo !att!
-        echo !txt!
 
         %PGM%\\exec\\ascii2shp -d concpolys polygons <!txt!
         %PGM%\\exec\\txt2dbf -C11 -C5 -C9 -C5 -C6../ -C6 -d, !att! concpolys.dbf
@@ -231,7 +238,8 @@ def HYSPLIT_configure(start_model,
                samp_interval = samp_interval,
                puff_or_part = puff_or_part,
                particle_num = particle_num,
-               filename = filename
+               filename = filename,
+               concplot_a = concplot_a
               ))
 
     myBat.close()
