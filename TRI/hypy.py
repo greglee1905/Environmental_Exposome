@@ -269,7 +269,7 @@ def RSEI_merger(RSEI_df,TRI_df):
                  RSEI_df,
                  left_on ='FRSID',
                  right_on = 'FRSID',
-                 how='left')[['date',
+                 how='left')[['Group',
                               'CAS#/COMPOUNDID',
                               'Release',
                               'FRSID',
@@ -290,7 +290,67 @@ def RSEI_merger(RSEI_df,TRI_df):
                               'StackHeightSource',
                               'StackVelocitySource',
                               'StackDiameterSource']]
+
     return merge
+
+def RSEI_merger_2(RSEI_df,TRI_df):
+    """A function which concatenates RSEI data with TRI data based upon the FRSID.
+
+    This version is for specific use, early in the process to accelerate the code.
+
+    Input:
+    ----------
+    RSEI_df : Stock RSEI dataframe (in csv form)
+    TRI_df: Dataframe from TRI derived materials
+
+    Return:
+    ----------
+    merge: dataframe with the parameters listed above.
+    """
+
+    #If necessary, these can be changed to include more of the original parameters!
+    merge = pd.merge(TRI_df.reset_index(),
+                 RSEI_df,
+                 left_on ='FRSID',
+                 right_on = 'FRSID',
+                 how='left')[['Group',
+                                'YEAR',
+                                'TRIFD',
+                                'FRSID',
+                                'FACILITYNAME',
+                                'CITY',
+                                'COUNTY',
+                                'ST',
+                                'ZIP',
+                                'LATITUDE',
+                                'LONGITUDE',
+                                'INDUSTRYSECTORCODE',
+                                'INDUSTRYSECTOR',
+                                'CHEMICAL',
+                                'CAS#/COMPOUNDID',
+                                'METAL',
+                                'CARCINOGEN',
+                                'UNITOFMEASURE',
+                                '51-FUGITIVEAIR',
+                                '52-STACKAIR',
+                                'PRIMARYSIC',
+                                'INDUSTRYSECTORCODE.1',
+                                'PRODUCTIONWSTE(81-87)',
+                                'Inert',
+                                '1/2 Life',
+                                'Solubility in H2O',
+                                'MW',
+                                'Particle',
+                                'Gas',
+                                'Phase',
+                                'StackHeight',
+                                'StackVelocity',
+                                'StackDiameter',
+                                'StackHeightSource',
+                                'StackVelocitySource',
+                                'StackDiameterSource']]
+    return merge
+
 
 def hysplit_input_conversion(data,stack_or_fug):
     """A function to convert the height, lat and lon to a HYSPLIT input.
@@ -310,7 +370,8 @@ def hysplit_input_conversion(data,stack_or_fug):
     if stack_or_fug == 0:
         data["HS_loc_input"] = round(data["LATITUDE"],2).astype(str) + " "+ round(data["LONGITUDE"],2).astype(str) + " " + "0.00"
 
-    return data
+    data = data.drop(columns=['index'])
+    return data.reset_index()
 
 def chem_date_comb(startdate,enddate,freq,data):
     """A function which takes yearly data and creates an index breakdown of yearly release from start to end date at the desired frequency.
@@ -410,3 +471,29 @@ def chem_date_comb_2(data,freq,release_type):
     appended_data = appended_data.sort_index()
 
     return appended_data
+
+
+def uniq_fac_calc(df,columns):
+    """This function calculates the total number of releases which have the same Lat, Lon, Release, year
+
+        Input:
+        ----------
+        df: Desired dataframe containing the columns
+        columns: List of columns which are the keys for unique calculation
+
+        Return:
+        The original full dataframe with key
+        new_df = new dataframe without the repeated values with a key to map the values back to the original dataframe
+        overlap = overlap percentage
+        ----------
+    """
+
+    # Select duplicate rows except first occurrence based on all columns
+    old_df = df
+    old_df['duplicate_index'] = old_df.groupby(columns).ngroup()
+    new_df = old_df.drop_duplicates(subset='duplicate_index')
+    overlap= (old_df.shape[0]-new_df.shape[0])/old_df.shape[0]
+
+    #Merge the new index
+    # in order to map back, should just be able to merge ased upon the duplicate ID
+    return old_df,new_df,overlap
