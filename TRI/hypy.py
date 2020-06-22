@@ -118,11 +118,11 @@ def HYSPLIT_configure(start_model,
     REM Number of simultaneous concentration grids
     echo 1                      >>CONTROL
     REM Center (Lat, lon in degrees) Setting this as the center of Utah (39.3210, 111.0937)
-    echo 39.3210 111.0937              >>CONTROL
+    echo 39.3 -111.1              >>CONTROL
     REM Grid spacing (Lat,lon in degrees)
     echo 0.05 0.05              >>CONTROL
     REM Grid span (Lat,lon in degrees) changing based upon the width and height of Utah
-    echo 5.5 5.5              >>CONTROL
+    echo 6 5              >>CONTROL
     REM Enter grid #1 directory (where things are written)
     echo .//                    >>CONTROL
     REM Enter grid #1 filename
