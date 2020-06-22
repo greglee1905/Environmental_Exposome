@@ -1,5 +1,5 @@
 #This document represents functions which will be utilized within the
-#HYSPLIT modeling worklflow.
+#HYSPLIT modeling workflow.
 
 #Greg Lee
 #05.13.20
@@ -117,8 +117,8 @@ def HYSPLIT_configure(start_model,
 
     REM Number of simultaneous concentration grids
     echo 1                      >>CONTROL
-    REM Center (Lat, lon in degrees)
-    echo 0.0 0.0                >>CONTROL
+    REM Center (Lat, lon in degrees) Setting this as the center of Utah (39.3210, 111.0937)
+    echo 39.3210 111.0937              >>CONTROL
     REM Grid spacing (Lat,lon in degrees)
     echo 0.05 0.05              >>CONTROL
     REM Grid span (Lat,lon in degrees) changing based upon the width and height of Utah
